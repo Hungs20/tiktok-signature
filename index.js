@@ -13,6 +13,7 @@ class Signer {
     "--window-position=0,0",
     "--ignore-certifcate-errors",
     "--ignore-certifcate-errors-spki-list",
+    
   ];
 
   constructor(userAgent, tac, browser) {
@@ -43,7 +44,7 @@ class Signer {
     if (!this.browser) {
       this.browser = await webkit.launch(this.options);
     } else {
-      this.browser = await this.browser.launch();
+      this.browser = await this.browser.launch({ chromiumSandbox: false });
     }
     
     
