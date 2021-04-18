@@ -50,10 +50,6 @@ class Signer {
     emulateTemplate.viewport.height = getRandomInt(320, 1920);
 
     this.context = await this.browser.newContext({
-      ...emulateTemplate,
-      deviceScaleFactor: getRandomInt(1, 3),
-      isMobile: Math.random() > 0.5,
-      hasTouch: Math.random() > 0.5,
       userAgent: this.userAgent,
     });
 
