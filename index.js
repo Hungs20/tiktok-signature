@@ -1,8 +1,9 @@
-const { firefox } = require("playwright-firefox");
+const { webkit, devices } = require("playwright-webkit");
+const iPhone11 = devices["iPhone 11 Pro"];
 
 class Signer {
   userAgent =
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36"
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
   args = [
     "--no-sandbox",
     "--disable-setuid-sandbox",
@@ -10,7 +11,6 @@ class Signer {
     "--window-position=0,0",
     "--ignore-certifcate-errors",
     "--ignore-certifcate-errors-spki-list",
-    
   ];
 
   constructor(userAgent, tac, browser) {
@@ -39,17 +39,29 @@ class Signer {
   }
 
   async init() {
-    if(this.browser) {
-      this.browser = await this.browser.launch(this.options);
+    if (!this.browser) {
+      this.browser = await webkit.launch(this.options);
     } else {
-      this.browser = await firefox.launch(this.options);
+      this.browser = await this.browser.launch(this.options);
     }
 
+    let emulateTemplate = { ...iPhone11 };
+    emulateTemplate.viewport.width = getRandomInt(320, 1920);
+    emulateTemplate.viewport.height = getRandomInt(320, 1920);
 
     this.context = await this.browser.newContext({
+      ...emulateTemplate,
+      deviceScaleFactor: getRandomInt(1, 3),
+      isMobile: Math.random() > 0.5,
+      hasTouch: Math.random() > 0.5,
       userAgent: this.userAgent,
     });
 
+    // const cookies = fs.readFileSync('./config/cookies.json', 'utf8')
+
+    // const deserializedCookies = JSON.parse(cookies)
+    // await this.context.addCookies(deserializedCookies)
+  
     this.page = await this.context.newPage();
     await this.page.goto("https://www.tiktok.com/@rihanna?lang=en", {
       waitUntil: "load",
