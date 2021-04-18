@@ -118,6 +118,9 @@ class Signer {
     if (this.browser && !this.isExternalBrowser) {
       await this.browser.close();
       this.browser = null;
+    } else if(this.browser) {
+      await this.browser.close();
+      this.browser = null;
     }
     if (this.page) {
       this.page = null;
