@@ -1,4 +1,6 @@
 const { webkit, devices } = require("playwright-webkit");
+
+const { firefox } = require("playwright-firefox");
 const iPhone11 = devices["iPhone 11 Pro"];
 
 class Signer {
@@ -40,7 +42,11 @@ class Signer {
   async init() {
     if (!this.browser) {
       this.browser = await webkit.launch(this.options);
+    } else {
+      this.browser = await this.browser.launch();
     }
+    
+    
 
     let emulateTemplate = { ...iPhone11 };
     emulateTemplate.viewport.width = getRandomInt(320, 1920);
