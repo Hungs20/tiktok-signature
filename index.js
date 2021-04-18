@@ -1,7 +1,4 @@
-const { webkit, devices } = require("playwright-webkit");
-
 const { firefox } = require("playwright-firefox");
-const iPhone11 = devices["iPhone 11 Pro"];
 
 class Signer {
   userAgent =
@@ -37,27 +34,15 @@ class Signer {
       ignoreDefaultArgs: ["--mute-audio", "--hide-scrollbars"],
       headless: true,
       ignoreHTTPSErrors: true,
+      chromiumSandbox: false
     };
   }
 
   async init() {
-    if (!this.browser) {
-      this.browser = await webkit.launch(this.options);
-    } else {
-      this.browser = await this.browser.launch({ chromiumSandbox: false });
-    }
-    
-    
+    this.browser = await this.browser.launch(this.options);
 
-    let emulateTemplate = { ...iPhone11 };
-    emulateTemplate.viewport.width = getRandomInt(320, 1920);
-    emulateTemplate.viewport.height = getRandomInt(320, 1920);
 
     this.context = await this.browser.newContext({
-      ...emulateTemplate,
-      deviceScaleFactor: getRandomInt(1, 3),
-      isMobile: Math.random() > 0.5,
-      hasTouch: Math.random() > 0.5,
       userAgent: this.userAgent,
     });
 
