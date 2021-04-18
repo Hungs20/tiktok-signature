@@ -39,7 +39,11 @@ class Signer {
   }
 
   async init() {
-    this.browser = await this.browser.launch(this.options);
+    if(this.browser) {
+      this.browser = await this.browser.launch(this.options);
+    } else {
+      this.browser = await firefox.launch(this.options);
+    }
 
 
     this.context = await this.browser.newContext({
