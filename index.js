@@ -1,6 +1,6 @@
 const { webkit, devices } = require("playwright-webkit");
 const iPhone11 = devices["iPhone 11 Pro"];
-
+const fs = require('fs'); 
 class Signer {
   userAgent =
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
@@ -53,10 +53,10 @@ class Signer {
       userAgent: this.userAgent,
     });
 
-    // const cookies = fs.readFileSync('./config/cookies.json', 'utf8')
+    const cookies = fs.readFileSync('./config/cookies.json', 'utf8')
 
-    // const deserializedCookies = JSON.parse(cookies)
-    // await this.context.addCookies(deserializedCookies)
+    const deserializedCookies = JSON.parse(cookies)
+    await this.context.addCookies(deserializedCookies)
   
     this.page = await this.context.newPage();
     await this.page.goto("https://www.tiktok.com/@rihanna?lang=en", {
