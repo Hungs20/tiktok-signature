@@ -68,7 +68,7 @@ const PORT = process.env.PORT || 8080;
       }
     });
 
-    await signer.close();
+    //await signer.close();
   } catch (err) {
     console.error(err);
   }
