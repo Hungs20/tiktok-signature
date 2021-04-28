@@ -1,24 +1,26 @@
-const Signer = require('./index')
+const Signer = require("./index");
 
 var url = process.argv[2];
 
 (async function main() {
-    try {
-        const signer = new Signer()
-        await signer.init()
+  try {
+    const signer = new Signer();
+    await signer.init();
 
-        const verifyFp = await signer.getVerifyFp();
-        const token = await signer.sign(url)
-        const cookies = await signer.getCookies();
-        let output = JSON.stringify({
-            signature: token,
-            verifyFp: verifyFp,
-            cookies: cookies
-          });
-        console.log(output)
-        await signer.close()
-    } catch (err) {
-        console.error(err);
-    }
-
+    const sign = await signer.sign(url);
+    const navigator = await signer.navigator();
+    let output = JSON.stringify({
+      status: "ok",
+      data: {
+        signature: sign.signature,
+        verify_fp: sign.verify_fp,
+        signed_url: sign.signed_url,
+        navigator: navigator,
+      },
+    });
+    console.log(output);
+    await signer.close();
+  } catch (err) {
+    console.error(err);
+  }
 })();
